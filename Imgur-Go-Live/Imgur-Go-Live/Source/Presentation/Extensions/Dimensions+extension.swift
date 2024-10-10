@@ -8,6 +8,8 @@
 import SwiftUI
 
 extension CGFloat {
+    static var dimen1: CGFloat { 1 }
+    static var dimen2: CGFloat { 2 }
     static var dimen4: CGFloat { 4 }
     static var dimen8: CGFloat { 8 }
     static var dimen12: CGFloat { 12 }

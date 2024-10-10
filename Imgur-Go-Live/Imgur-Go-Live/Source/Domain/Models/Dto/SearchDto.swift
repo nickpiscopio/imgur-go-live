@@ -9,5 +9,4 @@ import Foundation
 
 struct SearchDto {
     let query: String
-    let type: String
 }

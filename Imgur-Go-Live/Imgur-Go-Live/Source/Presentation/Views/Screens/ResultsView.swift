@@ -45,7 +45,7 @@ struct ResultsView: View {
                             
                             WrappingHStack(album.images, id: \.self, alignment: .leading, spacing: .constant(.dimen8), lineSpacing: .dimen8) { image in
                                 ZStack {
-                                    AsyncImage(url: URL(string: viewModel.getImageLink(link: image.link))) { result in
+                                    AsyncImage(url: URL(string: viewModel.getImageUrl(url: image.link))) { result in
                                         result.image?
                                             .resizable()
                                             .aspectRatio(contentMode: .fill)
@@ -67,7 +67,6 @@ struct ResultsView: View {
     }
 }
 
-
 class ResultsViewModel: ObservableObject {
     @Published var albums: [ImgurAlbum] = []
     
@@ -84,8 +83,8 @@ class ResultsViewModel: ObservableObject {
         coordinator?.navigationManager.navigateBack()
     }
     
-    func getImageLink(link: String) -> String {
-        link
+    func getImageUrl(url: String) -> String {
+        url
             .replacingOccurrences(of: "\\", with: "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
     }

@@ -11,37 +11,44 @@ struct SearchView: View {
     @EnvironmentObject private var coordinator: DependencyCoordinator
     @StateObject private var viewModel: SearchViewModel = SearchViewModel()
     
-    var body: some View {        
-        VStack(spacing: .dimen24) {
+    var body: some View {
+        ZStack {
+            form
+        }
+        .background(Image(.landscape).blur(radius: 10))
+        .onAppear {
+            viewModel.initDependencies(coordinator)
+        }
+    }
+    
+    private var form: some View {        
+        VStack(spacing: 0) {
             Spacer()
             
-            // I understand the dimensions here are redundant.
-            // I like to ensure spacing is not left to iOS' framework as they may decide to change it in the future.
-            VStack(alignment: .leading, spacing: .dimen16) {
+            VStack(alignment: .leading, spacing: .dimen24) {
                 Text("search_welcome_title")
                     .imgurGoLiveTitle()
+                VStack(alignment: .leading, spacing: .dimen8) {
+                    Text("search_welcome_description")
+                        .imgurGoLiveBody()
+                    
+                    TextField("", text: $viewModel.searchQuery)
+                        .textFieldStyle(ImgurGoLiveTextFieldStyle())
+                        .multilineTextAlignment(.leading)
+                }
                 
-                Text("search_welcome_description")
-                    .imgurGoLiveBody()
+                Button {
+                    viewModel.search()
+                } label: {
+                    PrimaryButton(buttonText: String(localized: "search_button_title"), isLoading: viewModel.isLoading)
+                }
             }
-            
-            TextField("", text: $viewModel.searchQuery)
-                .textFieldStyle(ImgurGoLiveTextFieldStyle())
-                .multilineTextAlignment(.leading)
-            
-            Button {
-                viewModel.search()
-            } label: {
-                PrimaryButton(buttonText: String(localized: "search_button_title"), isLoading: viewModel.isLoading)
-            }
+            .padding(.dimen16)
+            .cardBackground()
             
             Spacer()
         }
         .padding(.dimen16)
-        
-        .onAppear {
-            viewModel.initDependencies(coordinator)
-        }
     }
 }
 
@@ -64,7 +71,7 @@ class SearchViewModel: ObservableObject {
             return
         }
         
-        let dto = SearchDto(query: searchQuery, type: "album")
+        let dto = SearchDto(query: searchQuery)
         
         Task {
             do {

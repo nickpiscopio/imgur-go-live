@@ -97,7 +97,7 @@ struct NavView<LeadingView: View, TitleView: View, TrailingView: View>: View {
             Rectangle()
                 .fill(Color.imgurGoLiveBlack20)
                 .frame(maxWidth: .infinity)
-                .frame(height: 1)
+                .frame(height: .dimen1)
         }
         .background(navColor)
     }
